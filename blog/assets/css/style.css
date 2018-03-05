@@ -1,0 +1,15 @@
+#suite {
+	display: none;
+}
+#suiteBoutton {
+	cursor: pointer;
+
+}
+#chercher {
+	background-color: #272E39;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 0 0.25em 0 rgba(0, 0, 0, 0.25)
+}
+
+#horaire, #quiSommesNous, #nousContacter {
+	cursor: pointer;
+}
