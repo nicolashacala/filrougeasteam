@@ -11,6 +11,13 @@ class ArticleManager extends Manager{
         return $req;
     }
 
+    public function getArticlesAndCategory(){
+        $db = $this->dbConnect();
+        $req = $db->query('SELECT blog.id_article id, blog.title title, blog.content content, blog.date_published date_published, blog.author author, GROUP_CONCAT(categories.name_category SEPARATOR ", ") categories FROM blog_categories bc INNER JOIN blog ON bc.id_article = blog.id_article INNER JOIN categories ON bc.id_category = categories.id_category GROUP BY blog.id_article');
+        
+        return $req;
+    }
+
     public function getArticlesByCategory($category){
         $db = $this->dbConnect();
         $filteredArticles = $db->prepare('SELECT blog.* FROM blog INNER JOIN blog_categories ON blog.id_article = blog_categories.id_article WHERE blog_categories.id_category = ?');
@@ -34,5 +41,19 @@ class ArticleManager extends Manager{
         $post = $req->fetch();
     
         return $post;
+    }
+
+    public function deleteArticle($articleId){
+        $db = $this->dbConnect();
+        $req = $db->prepare('DELETE FROM blog WHERE id_article = ?');
+        $req->execute(array($articleId));
+    }
+
+    public function addArticle($articleTitle, $articleContent, $articleAuthor){
+        $db = $this->dbConnect();
+        $req = $db->prepare('INSERT INTO blog(title, content, author) VALUES(?, ?, ?)');
+        $articleAdded = $req->execute(array($articleTitle, $articleContent, $articleAuthor));
+
+        return $articleAdded;
     }
 }

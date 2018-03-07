@@ -1,0 +1,1 @@
+<a href="index.php?action=manage"><button id="dashboardBoutton">dashboard</button></a><a href="index.php?action=disconnection"><button id="connexionBoutton">Deconnexion</button></a>

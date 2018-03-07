@@ -49,38 +49,60 @@ function filterByAuthor($authorName){
 
 }
 
-function post(){
-    $postManager = new \Openclassroom\Blog\Model\ArticleManager();
-    $post = $postManager->getPost($_GET['id']);
-    
-    $commentManager = new \Openclassroom\Blog\Model\CommentManager();
-    $comments = $commentManager->getComments($_GET['id']);
+function adminConnect($user, $password){
+    if($user == "admin" && $password == "tamere"){
+        $_SESSION["connexionAdmin"] = true;
 
-    require('view/frontend/postView.php');
-}
-
-function addComment($postId, $author, $comment){
-    $commentManager = new \Openclassroom\Blog\Model\CommentManager();
-    $affectedLines = $commentManager->postComment($postId, $author, $comment);
-
-    if ($affectedLines === false) {
-        throw new Exception('Impossible d\'ajouter le commentaire !');
-    }
-    else {
-        header('Location: index.php?action=post&id=' . $postId);
+        header('location: index.php');
     }
 }
 
-function comment(){
-    $commentManager = new \Openclassroom\Blog\Model\CommentManager();
-    $comment = $commentManager->getComment($_GET['id']);
+function adminDisconnect(){
+    $_SESSION["connexionAdmin"] = false;
+    $_SESSION = array();
+    session_destroy();
 
-    require('view/frontend/modifyCommentView.php');
+    header('location: index.php');
 }
 
-function modifyComment($newComment, $commentId){
-    $commentManager = new \Openclassroom\Blog\Model\CommentManager();
-    $newComment = $commentManager->insertNewComment($newComment, $commentId);
-    
-    header('location: index.php?action=modifyComment&id=' . $commentId);
+function showDashboard(){
+    $articleManager = new \Becode\Blog\Model\ArticleManager();
+    $reponse = $articleManager->getArticlesAndCategory();
+
+    require('view/frontend/dashboardView.php');
+}
+
+function removeArticle($articleId){
+    $articleManager = new \Becode\Blog\Model\ArticleManager();
+    $articleManager->deleteArticle($articleId);
+
+    header('location: index.php?action=manage');
+}
+
+function createArticle($articleTitle, $articleContent, $articleAuthor, $cat){
+    $articleManager = new \Becode\Blog\Model\ArticleManager();
+    $articleManager->addArticle($articleTitle, $articleContent, $articleAuthor);
+
+    if($articleAdded == false){
+        throw new Exception('Impossible d\'ajouter l\'article');
+    }
+
+    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
+    $articleFilterManager->addCatToArticle($articleTitle, $cat);
+
+    header('location: index.php?action=addArticle');
+}
+
+function createCategory($category){
+    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
+    $articleFilterManager->addCategory($category);
+
+    header('location: index.php?action=addArticle');
+}
+
+function getAddForm(){
+    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
+    $categories = $articleFilterManager->getCategories();
+
+    require('view/frontend/addFormView.php');
 }

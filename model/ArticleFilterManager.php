@@ -35,4 +35,22 @@ class ArticleFilterManager extends Manager{
 
         return $author;
     }
+
+    public function addCatToArticle($articleTitle, $cat){
+        $db = $this->dbConnect();
+        $req = $db->prepare('SELECT id_article FROM blog WHERE title = ?');
+        $req->execute(array($articleTitle));
+        $idArticle = $req->fetch();
+		foreach ($cat as $category) {
+		    $db->exec("INSERT INTO blog_categories(id_article, id_category) VALUES($idArticle[0], $category)");
+        }
+    }
+
+    public function addCategory($category){
+        $db = $this->dbConnect();
+        $req = $db->prepare('INSERT INTO categories(name_category) VALUES(?)');
+        $categoryAdded = $req->execute(array($category));
+
+        return $categoryAdded;
+    }
 }
