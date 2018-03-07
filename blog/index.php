@@ -1,3 +1,19 @@
+<?php 
+	// Start the session
+		session_start();
+		$msgConnexion='<button id="connexionBoutton" data-toggle="modal" data-target="#modal-connexion">Connexion</button>';
+if(isset($_SESSION["connexionAdmin"])){
+	if($_SESSION["connexionAdmin"] == true){
+		$msgConnexion='<a href="assets/php/dashboard.php"><button id="dashboardBoutton">dashboard</button></a><form action="assets/php/deconnexion.php"><button type="submit" id="connexionBoutton">Deconnexion</button></form>'; 
+	}
+		else{
+		$msgConnexion='<button id="connexionBoutton" data-toggle="modal" data-target="#modal-connexion">Connexion</button>' ;
+	}
+
+	
+
+}
+?>
 <!DOCTYPE HTML>
 <!--
 	Striped by HTML5 UP
@@ -20,7 +36,8 @@
 
 	</head>
 	<body>
-			
+		<!-- connexion -->
+		<button id="connexionBoutton" data-toggle="modal" data-target="#modal-connexion"><?php echo $msgConnexion ?></button>
 		<!-- Content -->
 			<div id="content">
 				<div class="inner">
@@ -456,6 +473,33 @@
 				    </div>
 				  </div>
 				</div>
+
+				<!-- modal connexion -->
+				<div class="modal fade" id="modal-connexion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog modal-lg" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel4">Connexion</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      		<form  action="assets/php/connexion.php" method="POST" class="form-group" id="formulaireConnexion">
+							 <div class="modal-body row">
+							     	<label for="connexion" class="form-control-label">identifiant</label>
+									<input type="text" name="connexion" class="form-control" id="connexion">
+									<label for="password">mot de passse</label>
+									<input type="password" name="password" class="form-control" id="password">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								<button type="submit" class="btn" id="conexionFormulaireButton">Connexion</button>
+							</div>
+						</form>
+				    </div>
+				  </div>
+				</div>
+
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>

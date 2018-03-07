@@ -110,3 +110,6 @@ $("#quiSommesNous").click(function(){
 $("#nousContacter").click(function(){
 	$('#modal-nousContacter').modal('show')
 })
+
+
+
