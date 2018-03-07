@@ -14,7 +14,7 @@ $reponse = $bdd->query('SELECT blog.id_article id, blog.title title, blog.conten
 while ($donnees = $reponse->fetch())
 
  {
-	$msgComplet .= '<tr><td>'.$donnees["title"].'</td><td>'.$donnees["author"].'</td><td>'.$donnees["date_published"].'</td><td>'.$donnees["categories"].'</td><td> <a class="btn btn-primary" href="modifier.php?id='.$donnees["id"].'">modifier</a></td><td> <a class="btn btn-primary" href="supprimer.php?id='.$donnees["id"].'">supprimer</a></td></tr>';
+	$msgComplet .= '<tr><td>'.$donnees["title"].'</td><td>'.$donnees["author"].'</td><td>'.$donnees["date_published"].'</td><td>'.$donnees["categories"].'</td><td> <a class="btn btn-primary" href="modifier.php?id='.$donnees["id"].'">modifier</a></td><td> <a class="btn btn-danger" href="supprimer.php?id='.$donnees["id"].'">supprimer</a></td></tr>';
 
  }
 
@@ -30,6 +30,7 @@ while ($donnees = $reponse->fetch())
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 </head>
 <body>
+	<a href="ajout.php" class="btn btn-success">Ajouter un article</a>
 	<table style="width: 100%;">
    <tr>
 
@@ -55,48 +56,6 @@ while ($donnees = $reponse->fetch())
    
 
 </table>
-
-<!-- modal modifier -->
-
-<div class="modal fade" id="modal-ajout">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="">
-	 		<label for=""></label>
-		 	<input type="text">
-
-		 	<label for=""></label>
-		 	<input type="text">
-
-		 	<label for=""></label>
-		 	<input type="text">
-
-		 	<label for=""></label>
-		 	<input type="text">
-
-		 	<label for=""></label>
-		 	<input type="text">
-
-		 	<label for=""></label>
-		 	<input type="text">
- 		</form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
+	
 </body>
 </html>

@@ -10,29 +10,31 @@ catch (Exception $e){
 $id= $_GET["id"];
 
 // creation des catégorie
-$reponse = $bdd->query('SELECT * FROM categories');
-$checked = $bdd->query("SELECT * FROM blog_categories WHERE id_article = $id");
+$reponse = $bdd->query("SELECT * FROM categories");
+$checked = $bdd->query("SELECT id_category FROM blog_categories WHERE id_article = $id ORDER BY id_category");
+$checkedF = $checked->fetchAll();
 $checkboxHTML='';
 while ($donnees = $reponse->fetch())
 {
+	
 	$checkedOK = false;
-	while($checkedF = $checked->fetch()){
-			echo"0";
-		if($donnees["id_category"] == $checkedF["id_category"]){
+	$nb_data = count($checkedF);
+	for ($i=0; $i < $nb_data; $i++) { 
+		if($donnees["id_category"] == $checkedF[$i]["id_category"]){
 			$checkedOK = true;
-			echo"1";
-
-		}
+			
+	}
 	}
 
-	if ($checkedOK) {
+	
+	if ($checkedOK == true) {
 		$checkboxHTML .= '<label for="checkbox[]">'.$donnees["name_category"].'</label><input name="checkbox[]" checked="" type="checkbox" value='.$donnees["id_category"].'>';
-		echo "2";
+		
 	}
 	else{
 	$checkboxHTML .= '<label for="checkbox[]">'.$donnees["name_category"].'</label><input name="checkbox[]" type="checkbox" value='.$donnees["id_category"].'>';
 	}
-	echo "3";
+	
 };
 
 
@@ -52,7 +54,7 @@ $donnees = $reponse->fetch();
  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
  </head>
  <body>
- 	<form action="">
+ 	<form action="modifier-BDD.php?id=<?php echo $id ?>" method="POST">
  		<label for="title">Titre</label><br>
 	 	<input name="title" type="text" value="<?=$donnees["title"]?>"><br>
 

@@ -31,7 +31,6 @@ while ($donnees = $reponse->fetch())
 		// ajout table blog_categories
 		$idArticle = $bdd->query("SELECT id_article FROM blog WHERE title = '$title'");
 		$idArticle = $idArticle->fetch();
-		echo($idArticle[0]);
 		foreach ($_POST["checkbox"] as $cat) {
 		$bdd->exec("INSERT INTO blog_categories(id_article, id_category) VALUES($idArticle[0], $cat)");
 		}
@@ -45,6 +44,8 @@ while ($donnees = $reponse->fetch())
 
 
  ?>
+
+
  <!DOCTYPE html>
  <html lang="fr">
  <head>
@@ -55,13 +56,13 @@ while ($donnees = $reponse->fetch())
  <body>
  	<form action="" method="POST">
  		<label for="title">Titre</label><br>
-	 	<input name="title" type="text"><br>
+	 	<input name="title" type="text" value="<?php if(isset($_POST['title'])){echo htmlspecialchars($_POST['title']);}?>"><br>
 
 	 	<label for="content">Contenu</label><br>
-	 	<textarea name="content"></textarea><br>
+	 	<textarea name="content"><?php if(isset($_POST['content'])){echo htmlspecialchars($_POST['content']);}?></textarea><br>
 
 	 	<label for="author">Author</label><br>
-	 	<input name="author" type="text"><br>
+	 	<input name="author" type="text" value="<?php if(isset($_POST['author'])){echo htmlspecialchars($_POST['author']);}?>"><br>
 		
 		<?=$checkboxHTML ?><br>
 
