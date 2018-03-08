@@ -52,6 +52,24 @@ try{
                 throw new Exception('Vous devez être connecté pour effectuer cette action');
             }
         }
+        elseif($_GET['action'] == 'modifyArticle'){
+            if(isset($_SESSION['connexionAdmin']) && $_SESSION['connexionAdmin']){
+                if(isset($_GET['id'])){
+                    if(isset($_POST["checkbox"]) and $_POST["title"] !="" and $_POST["content"] !="" and $_POST["author"]!=""){
+                        modifyArticle($_POST["title"], $_POST["content"], $_POST["author"], $_GET['id'], $_POST["checkbox"]);
+                    }
+                    else{
+                        getModificationForm($_GET['id']);
+                    }
+                }
+                else{
+                    throw new Exception('Aucun article spécifié');
+                }
+            }
+            else{
+                throw new Exception('Vous devez être connecté pour effectuer cette action');
+            }
+        }
         elseif($_GET['action'] == 'addArticle'){
             if(isset($_SESSION['connexionAdmin']) && $_SESSION['connexionAdmin']){
                 if(isset($_POST["checkbox"]) and $_POST["title"] !="" and $_POST["content"] !="" and $_POST["author"]!="" ){

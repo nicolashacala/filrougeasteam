@@ -1,54 +1,58 @@
 <?php
-require_once('model/ArticleManager.php');
-require_once('model/ArticleFilterManager.php');
+require_once('model/BlogManager.php');
+require_once('model/CategoryManager.php');
+require_once('model/BlogCategoriesManager.php');
 
+//Visitor 
 function listArticles(){
-    $articleManager = new \Becode\Blog\Model\ArticleManager();
-    $articles = $articleManager->getArticles();
+    $blogManager = new \Becode\Blog\Model\BlogManager();
+    $articles = $blogManager->getArticles();
 
-    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
-    $categories = $articleFilterManager->getCategories();
+    $categoryManager = new \Becode\Blog\Model\CategoryManager();
+    $categories = $categoryManager->getCategories();
 
-    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
-    $authors = $articleFilterManager->getAuthors();
+    $blogManager = new \Becode\Blog\Model\BlogManager();
+    $authors = $blogManager->getAuthors();
     
     require('view/frontend/listArticlesView.php');
     
 }
 
 function filterByCategory($category){
-    $articleManager = new \Becode\Blog\Model\ArticleManager();
-    $articles = $articleManager->getArticlesByCategory($category);
+    $blogCategoriesManager = new \Becode\Blog\Model\BlogCategoriesManager();
+    $articles = $blogCategoriesManager->getArticlesByCategory($category);
 
-    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
-    $categories = $articleFilterManager->getCategories();
+    $categoryManager = new \Becode\Blog\Model\CategoryManager();
+    $categories = $categoryManager->getCategories();
 
-    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
-    $category = $articleFilterManager->getCategory($category);
+    $CategoryManager = new \Becode\Blog\Model\CategoryManager();
+    $category = $CategoryManager->getCategory($category);
 
-    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
-    $authors = $articleFilterManager->getAuthors();
+    $blogManager = new \Becode\Blog\Model\BlogManager();
+    $authors = $blogManager->getAuthors();
     
     require('view/frontend/filteredByCatArticlesView.php');
 }
 
 function filterByAuthor($authorName){
-    $articleManager = new \Becode\Blog\Model\ArticleManager();
-    $articles = $articleManager->getArticlesByAuthor($authorName);
+    $blogManager = new \Becode\Blog\Model\BlogManager();
+    $articles = $blogManager->getArticlesByAuthor($authorName);
     
-    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
-    $categories = $articleFilterManager->getCategories();
+    $categoryManager = new \Becode\Blog\Model\CategoryManager();
+    $categories = $categoryManager->getCategories();
 
-    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
-    $authors = $articleFilterManager->getAuthors();
+    $blogManager = new \Becode\Blog\Model\BlogManager();
+    $authors = $blogManager->getAuthors();
 
-    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
-    $author = $articleFilterManager->getAuthor($authorName);
+    $blogManager = new \Becode\Blog\Model\BlogManager();
+    $author = $blogManager->getAuthor($authorName);
 
     require('view/frontend/filteredByAuthArticlesView.php');
 
 }
 
+
+//Administrator
 function adminConnect($user, $password){
     if($user == "admin" && $password == "tamere"){
         $_SESSION["connexionAdmin"] = true;
@@ -66,43 +70,74 @@ function adminDisconnect(){
 }
 
 function showDashboard(){
-    $articleManager = new \Becode\Blog\Model\ArticleManager();
-    $reponse = $articleManager->getArticlesAndCategory();
+    $blogCategoriesManager = new \Becode\Blog\Model\BlogCategoriesManager();
+    $reponse = $blogCategoriesManager->getArticlesAndCategory();
 
     require('view/frontend/dashboardView.php');
 }
 
 function removeArticle($articleId){
-    $articleManager = new \Becode\Blog\Model\ArticleManager();
-    $articleManager->deleteArticle($articleId);
+    $blogManager = new \Becode\Blog\Model\BlogManager();
+    $blogManager->deleteArticle($articleId);
 
     header('location: index.php?action=manage');
 }
 
-function createArticle($articleTitle, $articleContent, $articleAuthor, $cat){
-    $articleManager = new \Becode\Blog\Model\ArticleManager();
-    $articleManager->addArticle($articleTitle, $articleContent, $articleAuthor);
+function modifyArticle($articleTitle, $articleContent, $articleAuthor, $articleId, $category){
+    $blogManager = new \Becode\Blog\Model\BlogManager();
+    $blogManager->updateArticle($articleTitle, $articleContent, $articleAuthor, $articleId);
 
-    if($articleAdded == false){
+    if($modifiedArticle === false){
+        throw new Exception('Impossible de modifier l\'article');
+    }
+
+    $categoryManager = new \Becode\Blog\Model\CategoryManager();
+    $categoryManager->updateCategories($articleId, $category);
+
+    if($modifiedCategory === false){
+        throw new Exception('Impossible de modifier la catégorie');
+    }
+    
+    header('location: index.php?action=modifyArticle&id='.$articleId);
+}
+
+function createArticle($articleTitle, $articleContent, $articleAuthor, $cat){
+    $blogManager = new \Becode\Blog\Model\BlogManager();
+    $blogManager->addArticle($articleTitle, $articleContent, $articleAuthor);
+
+    if($articleAdded === false){
         throw new Exception('Impossible d\'ajouter l\'article');
     }
 
-    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
-    $articleFilterManager->addCatToArticle($articleTitle, $cat);
+    $blogCategoriesManager = new \Becode\Blog\Model\BlogCategoriesManager();
+    $blogCategoriesManager->addCatToArticle($articleTitle, $cat);
 
     header('location: index.php?action=addArticle');
 }
 
 function createCategory($category){
-    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
-    $articleFilterManager->addCategory($category);
+    $categoryManager = new \Becode\Blog\Model\CategoryManager();
+    $categoryManager->addCategory($category);
 
     header('location: index.php?action=addArticle');
 }
 
 function getAddForm(){
-    $articleFilterManager = new \Becode\Blog\Model\ArticleFilterManager();
-    $categories = $articleFilterManager->getCategories();
+    $categoryManager = new \Becode\Blog\Model\CategoryManager();
+    $categories = $categoryManager->getCategories();
 
     require('view/frontend/addFormView.php');
+}
+
+function getModificationForm($articleId){
+    $blogManager = new \Becode\Blog\Model\BlogManager();
+    $article = $blogManager->getArticle($articleId);
+
+    $categoryManager = new \Becode\Blog\Model\CategoryManager();
+    $categories = $categoryManager->getCategories();
+
+    $blogCategoriesManager = new \Becode\Blog\Model\BlogCategoriesManager();
+    $checkedF = $blogCategoriesManager->getCategoryOfArticle($articleId);
+
+    require('view/frontend/modificationFormView.php');
 }

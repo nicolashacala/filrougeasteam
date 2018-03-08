@@ -12,7 +12,7 @@
 <?php
 while ($donnees = $reponse->fetch()){
     ?>
-    <tr><td><?= htmlspecialchars($donnees['title']) ?></td><td><?= htmlspecialchars($donnees['author']) ?></td><td><?= htmlspecialchars($donnees['date_published']) ?></td><td><?= htmlspecialchars($donnees['categories']) ?></td><td> <a class="btn btn-primary" href="modifier.php?id=<?= htmlspecialchars($donnees['id']) ?>">modifier</a></td><td> <a class="btn btn-primary" href="supprimer.php?id=<?= htmlspecialchars($donnees['id']) ?>">supprimer</a></td></tr>
+    <tr><td><?= htmlspecialchars($donnees['title']) ?></td><td><?= htmlspecialchars($donnees['author']) ?></td><td><?= htmlspecialchars($donnees['date_published']) ?></td><td><?= htmlspecialchars($donnees['categories']) ?></td><td> <a class="btn btn-primary" href="index.php?action=modifyArticle&amp;id=<?= htmlspecialchars($donnees['id']) ?>">modifier</a></td><td> <a class="btn btn-primary" href="index.php?action=deleteArticle&amp;id=<?= htmlspecialchars($donnees['id']) ?>">supprimer</a></td></tr>
     <?php
 }
 ?>

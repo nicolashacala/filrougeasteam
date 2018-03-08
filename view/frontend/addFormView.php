@@ -1,5 +1,5 @@
 <?php ob_start(); ?>
-<form class="add_article" action="index.php?action=addArticle" method="POST">
+<form class="margin_form" action="index.php?action=addArticle" method="POST">
  		<label for="title">Titre</label><br>
 	 	<input name="title" type="text" value="<?php if(isset($_POST['title'])){echo htmlspecialchars($_POST['title']);}?>"><br>
 
@@ -17,7 +17,7 @@
         }
         $categories->closeCursor();
         ?><br>
-	 	<button class="btn btn-secondary">Annuler</button>
+	 	<a href="index.php?action=manage"><button class="btn btn-secondary">Annuler</button></a>
 	 	<button type="submit" class="btn btn-primary">Sauvegarder</button><br>
 </form>
 <form action="index.php?action=addCategory" method="POST">
