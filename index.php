@@ -72,7 +72,7 @@ try{
         }
         elseif($_GET['action'] == 'addArticle'){
             if(isset($_SESSION['connexionAdmin']) && $_SESSION['connexionAdmin']){
-                if(isset($_POST["checkbox"]) and $_POST["title"] !="" and $_POST["content"] !="" and $_POST["author"]!="" ){
+                if(!empty($_POST["checkbox"]) && !empty($_POST["title"]) && !empty($_POST["content"]) && !empty($_POST["author"])){
                     createArticle($_POST["title"], $_POST["content"], $_POST["author"], $_POST["checkbox"]);
                 }
                 else{
@@ -85,7 +85,12 @@ try{
         }
         elseif($_GET['action'] == 'addCategory'){
             if(isset($_SESSION['connexionAdmin']) && $_SESSION['connexionAdmin']){
-                createCategory($_POST['newCat']);
+                if(!empty($_POST['newCat'])){
+                    createCategory($_POST['newCat']);
+                }
+                else{
+                    throw new Exception('Catégorie non valide');
+                }
             }
             else{
                 throw new Exception('Vous devez être connecté pour ajouter une catégorie');

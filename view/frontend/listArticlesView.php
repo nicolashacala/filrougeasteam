@@ -2,6 +2,7 @@
 <div id="content">
     <div class="inner">
 <?php
+var_dump($articles);
 while ($data = $articles->fetch()){
     ?>
     <article class="box post post-excerpt">

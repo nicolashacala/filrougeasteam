@@ -54,10 +54,16 @@ function filterByAuthor($authorName){
 
 //Administrator
 function adminConnect($user, $password){
-    if($user == "admin" && $password == "tamere"){
+    if($user == "admin" && $password == "admin"){
         $_SESSION["connexionAdmin"] = true;
 
         header('location: index.php');
+    }
+    elseif($user != "admin"){
+        throw new Exception('Mauvais identifiant');
+    }
+    elseif($password != "admin"){
+        throw new Exception('Mauvais mot de passe');
     }
 }
 
@@ -91,8 +97,8 @@ function modifyArticle($articleTitle, $articleContent, $articleAuthor, $articleI
         throw new Exception('Impossible de modifier l\'article');
     }
 
-    $categoryManager = new \Becode\Blog\Model\CategoryManager();
-    $categoryManager->updateCategories($articleId, $category);
+    $blogCategoriesManager = new \Becode\Blog\Model\BlogCategoriesManager();
+    $blogCategoriesManager->updateCategories($articleId, $category);
 
     if($modifiedCategory === false){
         throw new Exception('Impossible de modifier la catégorie');
