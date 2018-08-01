@@ -1,7 +1,7 @@
 # Syndicat des locataires
 
 As a team of three, we had to create a blog using PHP within a week time.
-We organised our project following the MVC structure which was a challenge that we set ourselves.
+We organised our project following the MVC structure which was a challenge that we set to ourselves.
 
 We also used the Kanban method to organise our team work which made us really efficient.
 
